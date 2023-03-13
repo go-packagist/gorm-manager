@@ -6,7 +6,6 @@
 [![codecov](https://codecov.io/gh/go-packagist/gormer/branch/master/graph/badge.svg?token=5TWGQ9DIRU)](https://codecov.io/gh/go-packagist/gormer)
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
-
 ## Installation
 
 ```bash
@@ -58,4 +57,4 @@ func main() {
 
 ## License
 
-MIT
+The MIT License (MIT). Please see [License File](LICENSE) for more information.
