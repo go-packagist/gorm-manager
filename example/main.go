@@ -1,21 +1,3 @@
-# gorm'er —— GORM Manager
-
-[![Go Report Card](https://goreportcard.com/badge/github.com/go-packagist/gormer)](https://goreportcard.com/report/github.com/go-packagist/gormer)
-[![tests](https://github.com/go-packagist/gormer/actions/workflows/go.yml/badge.svg)](https://github.com/go-packagist/gormer/actions/workflows/go.yml)
-[![GoDoc](https://pkg.go.dev/badge/github.com/go-packagist/gormer)](https://pkg.go.dev/github.com/go-packagist/gormer)
-[![codecov](https://codecov.io/gh/go-packagist/gormer/branch/master/graph/badge.svg?token=5TWGQ9DIRU)](https://codecov.io/gh/go-packagist/gormer)
-[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
-
-
-## Installation
-
-```bash
-go get github.com/go-packagist/gormer
-```
-
-## Usage
-
-```go
 package main
 
 import (
@@ -54,8 +36,3 @@ func main() {
 	g.Connection("db1").First(&User{})
 	g.Connection("db2").First(&User{})
 }
-```
-
-## License
-
-MIT
