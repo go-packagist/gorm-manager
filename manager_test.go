@@ -7,7 +7,7 @@ import (
 )
 
 func TestGormer(t *testing.T) {
-	db := NewManager(&Config{
+	db := New(&Config{
 		Default: "db1",
 		Connections: map[string]ConnectionFunc{
 			"db1": func() *gorm.DB {
@@ -23,4 +23,8 @@ func TestGormer(t *testing.T) {
 	assert.Equal(t, db.Connection(), db.Connection("db1"))
 	assert.Equal(t, db.DB, db.Connection("db1"))
 	assert.Equal(t, db.DB, db.Connection("db2"))
+
+	assert.Panics(t, func() {
+		db.Connection("db3")
+	})
 }
