@@ -30,7 +30,7 @@ type User struct {
 }
 
 func main() {
-	g := gormer.NewManager(&gormer.Config{
+	g := gormer.New(&gormer.Config{
 		Default: "db1",
 		Connections: map[string]gormer.ConnectionFunc{
 			"db1": func() *gorm.DB {

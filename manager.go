@@ -20,6 +20,10 @@ type Manager struct {
 	rw      sync.RWMutex
 }
 
+func New(config *Config) *Manager {
+	return NewManager(config)
+}
+
 func NewManager(config *Config) *Manager {
 	return &Manager{
 		config:  config,
