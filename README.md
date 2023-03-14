@@ -48,9 +48,8 @@ func main() {
 		},
 	})
 
-	g.First(&User{})              // use default connection(The test product could be discarded at any time)
 	g.Connection().First(&User{}) // use default connection(Recommended usage)
-	g.Connection("db1").First(&User{})
+	g.Connection("db1").First(&User{}) // use db1 connection
 	g.Connection("db2").First(&User{})
 }
 ```

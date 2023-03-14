@@ -21,8 +21,6 @@ func TestGormer(t *testing.T) {
 
 	assert.Equal(t, db.Connection("db1"), db.Connection("db1"))
 	assert.Equal(t, db.Connection(), db.Connection("db1"))
-	assert.Equal(t, db.DB, db.Connection("db1"))
-	assert.Equal(t, db.DB, db.Connection("db2"))
 
 	assert.Panics(t, func() {
 		db.Connection("db3")
