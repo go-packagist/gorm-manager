@@ -1,4 +1,4 @@
-# gorm'er —— GORM Manager
+# Gorm'er —— GORM Manager
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-packagist/gormer)](https://goreportcard.com/report/github.com/go-packagist/gormer)
 [![tests](https://github.com/go-packagist/gormer/actions/workflows/go.yml/badge.svg)](https://github.com/go-packagist/gormer/actions/workflows/go.yml)
@@ -48,7 +48,7 @@ func main() {
 		},
 	})
 
-	g.Connection().First(&User{}) // use default connection(Recommended usage)
+	g.Connection().First(&User{}) // use default connection
 	g.Connection("db1").First(&User{}) // use db1 connection
 	g.Connection("db2").First(&User{})
 }
