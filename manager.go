@@ -13,8 +13,6 @@ type Config struct {
 type ConnectionFunc func() *gorm.DB
 
 type Manager struct {
-	*gorm.DB
-
 	config  *Config
 	reloved map[string]*gorm.DB
 	rw      sync.RWMutex
@@ -53,11 +51,6 @@ func (m *Manager) resolve(name string) *gorm.DB {
 	defer m.rw.Unlock()
 
 	m.reloved[name] = m.config.Connections[name]()
-
-	// 骚操作
-	if name == m.config.Default {
-		m.DB = m.reloved[name]
-	}
 
 	return m.reloved[name]
 }
