@@ -8,16 +8,8 @@ import (
 )
 
 type DB struct {
-	db  *gorm.DB
-	err error
-}
-
-func (db *DB) DB() *gorm.DB {
-	return db.db
-}
-
-func (db *DB) Err() error {
-	return db.err
+	*gorm.DB
+	Err error
 }
 
 type Manager struct {
@@ -65,7 +57,7 @@ func (m *Manager) resolve(name string) *DB {
 	}
 
 	if _, ok := m.config.Connections[name]; !ok {
-		return &DB{err: errors.New("connection " + name + " is not defined")}
+		return &DB{Err: errors.New("connection " + name + " is not defined")}
 	}
 
 	var (
@@ -78,14 +70,14 @@ func (m *Manager) resolve(name string) *DB {
 		db, err = m.createMySQLConnection(m.config.Connections[name].(*MySQLConfig))
 		break
 	default:
-		return &DB{err: errors.New("connection " + name + " is not defined")}
+		return &DB{Err: errors.New("connection " + name + " is not defined")}
 	}
 
 	if err != nil {
-		return &DB{err: err}
+		return &DB{Err: err}
 	}
 
-	m.reloved[name] = &DB{db: db}
+	m.reloved[name] = &DB{DB: db}
 
 	return m.reloved[name]
 }
