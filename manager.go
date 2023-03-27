@@ -74,7 +74,7 @@ func (m *Manager) resolve(name string) *DB {
 	)
 
 	switch m.config.Connections[name].(type) {
-	case func() *MySQLConfig:
+	case *MySQLConfig:
 		db, err = m.createMySQLConnection(m.config.Connections[name].(*MySQLConfig))
 		break
 	default:
