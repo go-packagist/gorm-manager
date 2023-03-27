@@ -78,6 +78,20 @@ func TestGormer(t *testing.T) {
 		assert.Equal(t, "read:test1", userRw.Name)
 		assert.Equal(t, 18, userRw.Age)
 	})
+
+	t.Run("test instance", func(t *testing.T) {
+		var user User
+		Connect("db_write").DB.Model(&User{}).First(&user)
+
+		assert.Equal(t, 1, user.ID)
+	})
+
+	t.Run("test ignore DB", func(t *testing.T) {
+		var user User
+		Connect("db_write").Model(&User{}).First(&user)
+
+		assert.Equal(t, 1, user.ID)
+	})
 }
 
 func getUser(db *Manager, dbname string) *User {
@@ -144,5 +158,5 @@ func newManager() *Manager {
 				},
 			},
 		},
-	})
+	}, WithInstance)
 }
