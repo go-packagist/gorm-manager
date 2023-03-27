@@ -13,18 +13,18 @@ type DB struct {
 }
 
 type Manager struct {
-	config  *Config
-	reloved map[string]*DB
-	rw      sync.RWMutex
+	config   *Config
+	resolved map[string]*DB
+	rw       sync.RWMutex
 }
 
 type Option func(*Manager) *Manager
 
 func NewManager(config *Config, opts ...Option) *Manager {
 	m := &Manager{
-		config:  config,
-		reloved: make(map[string]*DB, len(config.Connections)),
-		rw:      sync.RWMutex{},
+		config:   config,
+		resolved: make(map[string]*DB, len(config.Connections)),
+		rw:       sync.RWMutex{},
 	}
 
 	for _, opt := range opts {
@@ -52,7 +52,7 @@ func (m *Manager) resolve(name string) *DB {
 	m.rw.Lock()
 	defer m.rw.Unlock()
 
-	if db, ok := m.reloved[name]; ok {
+	if db, ok := m.resolved[name]; ok {
 		return db
 	}
 
@@ -77,9 +77,9 @@ func (m *Manager) resolve(name string) *DB {
 		return &DB{Err: err}
 	}
 
-	m.reloved[name] = &DB{DB: db}
+	m.resolved[name] = &DB{DB: db}
 
-	return m.reloved[name]
+	return m.resolved[name]
 }
 
 func (m *Manager) createMySQLConnection(config *MySQLConfig) (*gorm.DB, error) {
