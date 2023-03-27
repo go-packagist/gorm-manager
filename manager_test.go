@@ -81,14 +81,14 @@ func TestGormer(t *testing.T) {
 
 	t.Run("test instance", func(t *testing.T) {
 		var user User
-		Connect("db_write").DB.Model(&User{}).First(&user)
+		Connect("write").DB.Model(&User{}).First(&user)
 
 		assert.Equal(t, 1, user.ID)
 	})
 
 	t.Run("test ignore DB", func(t *testing.T) {
 		var user User
-		Connect("db_write").Model(&User{}).First(&user)
+		Connect("write").Model(&User{}).First(&user)
 
 		assert.Equal(t, 1, user.ID)
 	})
