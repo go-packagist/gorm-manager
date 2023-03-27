@@ -19,7 +19,7 @@ go get github.com/go-packagist/gormer/v2
 package main
 
 import (
-	"github.com/go-packagist/gormer"
+	gormer "github.com/go-packagist/gormer/v2"
 	"gorm.io/gorm"
 )
 
