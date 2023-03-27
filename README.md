@@ -1,7 +1,7 @@
 # Gorm'er —— GORM Manager
 
 [![Go Version](https://badgen.net/github/release/go-packagist/gormer/stable)](https://github.com/go-packagist/gormer/releases)
-[![GoDoc](https://pkg.go.dev/badge/github.com/go-packagist/gormer)](https://pkg.go.dev/github.com/go-packagist/gormer)
+[![GoDoc](https://pkg.go.dev/badge/github.com/go-packagist/gormer/v2)](https://pkg.go.dev/github.com/go-packagist/gormer/v2)
 [![codecov](https://codecov.io/gh/go-packagist/gormer/branch/master/graph/badge.svg?token=5TWGQ9DIRU)](https://codecov.io/gh/go-packagist/gormer)
 [![Go Report Card](https://goreportcard.com/badge/github.com/go-packagist/gormer)](https://goreportcard.com/report/github.com/go-packagist/gormer)
 [![tests](https://github.com/go-packagist/gormer/actions/workflows/go.yml/badge.svg)](https://github.com/go-packagist/gormer/actions/workflows/go.yml)
@@ -10,7 +10,7 @@
 ## Installation
 
 ```bash
-go get github.com/go-packagist/gormer
+go get github.com/go-packagist/gormer/v2
 ```
 
 ## Usage
