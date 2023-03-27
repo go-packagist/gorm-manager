@@ -1,4 +1,4 @@
-module github.com/go-packagist/gormer
+module github.com/go-packagist/gormer/v2
 
 go 1.20
 
