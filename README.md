@@ -40,7 +40,7 @@ func main() {
 					},
 				}.String(),
 				GormConfig: &gorm.Config{
-					SkipDefaultTransaction: true, // 禁用默认事务
+					SkipDefaultTransaction: true,
 				},
 			},
 			"db2": &gormer.MySQLConfig{
