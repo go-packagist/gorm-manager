@@ -20,10 +20,7 @@ jobs:
       mysql:
         image: mysql:latest
         env:
-          MYSQL_DATABASE: gorm
-          MYSQL_USER: gorm
-          MYSQL_PASSWORD: gorm
-          MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+          MYSQL_ROOT_PASSWORD: "123456"
         ports:
           - 3306:3306
         options: >-

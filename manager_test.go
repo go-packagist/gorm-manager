@@ -89,16 +89,16 @@ func newManager() *Manager {
 	writeDSN := DSN{
 		Host: "127.0.0.1",
 		Port: 3306,
-		User: "gorm",
-		Pass: "gorm",
+		User: "root",
+		Pass: "123456",
 		Db:   "write",
 	}
 
 	readDSN := DSN{
 		Host: "127.0.0.1",
 		Port: 3306,
-		User: "gorm",
-		Pass: "gorm",
+		User: "root",
+		Pass: "123456",
 		Db:   "read",
 	}
 
