@@ -17,7 +17,7 @@ type User struct {
 
 func setup(db *Manager) {
 	for _, dbname := range []string{"write", "read"} {
-		db.Connect(dbname).DB.Exec("DROP DATABASE IF EXISTS " + dbname)
+		db.Connect("gormer").DB.Exec("DROP DATABASE IF EXISTS " + dbname)
 		db.Connect(dbname).DB.Exec("DROP TABLE IF EXISTS `users`")
 		db.Connect(dbname).DB.Exec("CREATE TABLE `users` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) DEFAULT NULL,`age` int(11) DEFAULT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4")
 		db.Connect(dbname).DB.Exec("INSERT INTO `users` (`id`, `name`, `age`) VALUES (1, ?, 18)", dbname+":test1")
@@ -103,8 +103,14 @@ func newManager() *Manager {
 	}
 
 	return NewManager(&Config{
-		Default: "write",
+		Default: "gormer",
 		Connections: map[string]Connection{
+			"gormer": &MySQLConfig{
+				DSN: writeDSN.String(),
+				GormConfig: &gorm.Config{
+					SkipDefaultTransaction: true, // 禁用默认事务
+				},
+			},
 			"write": &MySQLConfig{
 				DSN: writeDSN.String(),
 				GormConfig: &gorm.Config{

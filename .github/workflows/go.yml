@@ -20,11 +20,12 @@ jobs:
       mysql:
         image: mysql:latest
         env:
+          MYSQL_DATABASE: gormer
           MYSQL_ROOT_PASSWORD: "123456"
         ports:
           - 3306:3306
         options: >-
-          --health-cmd "mysqladmin ping -ugorm -pgorm"
+          --health-cmd "mysqladmin ping -uroot -p123456"
           --health-interval 10s
           --health-start-period 10s
           --health-timeout 5s
