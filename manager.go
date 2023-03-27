@@ -23,7 +23,7 @@ type Option func(*Manager) *Manager
 func NewManager(config *Config, opts ...Option) *Manager {
 	m := &Manager{
 		config:  config,
-		reloved: make(map[string]*DB),
+		reloved: make(map[string]*DB, len(config.Connections)),
 		rw:      sync.RWMutex{},
 	}
 
