@@ -85,28 +85,28 @@ func getUser(db *Manager, dbname string) *User {
 	return &user
 }
 
-func newManager() *Manager {
-	writeDSN := DSN{
+func newDSN(dbname string) DSN {
+	return DSN{
 		Host: "127.0.0.1",
 		Port: 3306,
 		User: "root",
 		Pass: "123456",
-		Db:   "write",
+		Db:   dbname,
 	}
+}
 
-	readDSN := DSN{
-		Host: "127.0.0.1",
-		Port: 3306,
-		User: "root",
-		Pass: "123456",
-		Db:   "read",
-	}
+func newManager() *Manager {
+	var (
+		gormerDSN = newDSN("gormer")
+		writeDSN  = newDSN("write")
+		readDSN   = newDSN("read")
+	)
 
 	return NewManager(&Config{
 		Default: "gormer",
 		Connections: map[string]Connection{
 			"gormer": &MySQLConfig{
-				DSN: writeDSN.String(),
+				DSN: gormerDSN.String(),
 				GormConfig: &gorm.Config{
 					SkipDefaultTransaction: true, // 禁用默认事务
 				},
