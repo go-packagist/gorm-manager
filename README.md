@@ -19,7 +19,7 @@ go get github.com/go-packagist/gormer/v2
 package main
 
 import (
-	gormer "github.com/go-packagist/gormer/v2"
+	"github.com/go-packagist/gormer/v2"
 	"gorm.io/gorm"
 )
 
@@ -63,7 +63,6 @@ func main() {
 
 	println(gormer.Connect("db2").Err) // if db2 is err
 }
-
 ```
 
 ## License
