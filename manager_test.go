@@ -17,7 +17,7 @@ type User struct {
 
 func setup(db *Manager) {
 	for _, dbname := range []string{"write", "read"} {
-		db.Connect("gormer").DB.Exec("DROP DATABASE IF EXISTS " + dbname)
+		db.Connect("gormer").DB.Exec("DROP DATABASE IF EXISTS ", "db_"+dbname)
 		db.Connect(dbname).DB.Exec("DROP TABLE IF EXISTS `users`")
 		db.Connect(dbname).DB.Exec("CREATE TABLE `users` (`id` int(11) NOT NULL AUTO_INCREMENT,`name` varchar(255) DEFAULT NULL,`age` int(11) DEFAULT NULL,PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4")
 		db.Connect(dbname).DB.Exec("INSERT INTO `users` (`id`, `name`, `age`) VALUES (1, ?, 18)", dbname+":test1")
@@ -98,8 +98,8 @@ func newDSN(dbname string) DSN {
 func newManager() *Manager {
 	var (
 		gormerDSN = newDSN("gormer")
-		writeDSN  = newDSN("write")
-		readDSN   = newDSN("read")
+		writeDSN  = newDSN("db_write")
+		readDSN   = newDSN("db_read")
 	)
 
 	return NewManager(&Config{
