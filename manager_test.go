@@ -15,6 +15,10 @@ type User struct {
 	Age  int
 }
 
+type NotSupportConnection struct{}
+
+var _ Connection = (*NotSupportConnection)(nil)
+
 func setup(db *Manager) {
 	for _, dbname := range []string{"write", "read"} {
 		db.Connect("gormer").DB.Exec("DROP DATABASE IF EXISTS db_" + dbname)
@@ -31,9 +35,34 @@ func TestGormer(t *testing.T) {
 	db := newManager()
 	setup(db)
 
-	assert.Nil(t, db.Connect("write").Err)
-	assert.Nil(t, db.Connect("read").Err)
-	assert.Nil(t, db.Connect("rw").Err)
+	t.Run("test base", func(t *testing.T) {
+		assert.Nil(t, db.Connect("write").Err)
+		assert.Nil(t, db.Connect("read").Err)
+		assert.Nil(t, db.Connect("rw").Err)
+		assert.Nil(t, db.Connect().Err)
+		assert.Nil(t, Connect("write").Err)
+		assert.Nil(t, Gormer().Connect("write").Err)
+		assert.Nil(t, Factory().Connect("read").Err)
+		assert.Error(t, db.Connect("not-exists").Err)
+		assert.Error(t, db.Connect("not-support").Err)
+		assert.Panics(t, func() {
+			db.Connect("errhost")
+		})
+	})
+
+	t.Run("test instance", func(t *testing.T) {
+		var user User
+		Connect("write").DB.Model(&User{}).First(&user)
+
+		assert.Equal(t, 1, user.ID)
+	})
+
+	t.Run("test ignore DB", func(t *testing.T) {
+		var user User
+		Connect("write").Model(&User{}).First(&user)
+
+		assert.Equal(t, 1, user.ID)
+	})
 
 	t.Run("test write", func(t *testing.T) {
 		user := getUser(db, "write")
@@ -77,20 +106,6 @@ func TestGormer(t *testing.T) {
 		assert.Equal(t, 1, userRw.ID)
 		assert.Equal(t, "read:test1", userRw.Name)
 		assert.Equal(t, 18, userRw.Age)
-	})
-
-	t.Run("test instance", func(t *testing.T) {
-		var user User
-		Connect("write").DB.Model(&User{}).First(&user)
-
-		assert.Equal(t, 1, user.ID)
-	})
-
-	t.Run("test ignore DB", func(t *testing.T) {
-		var user User
-		Connect("write").Model(&User{}).First(&user)
-
-		assert.Equal(t, 1, user.ID)
 	})
 }
 
@@ -157,6 +172,10 @@ func newManager() *Manager {
 						SetMaxOpenConns(200),
 				},
 			},
+			"errhost": &MySQLConfig{
+				DSN: "",
+			},
+			"not-support": &NotSupportConnection{},
 		},
 	}, WithInstance)
 }
