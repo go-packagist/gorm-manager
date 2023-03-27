@@ -1,36 +1,54 @@
 package gormer
 
 import (
+	"errors"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"sync"
 )
 
-type Config struct {
-	Default     string
-	Connections map[string]ConnectionFunc
+type DB struct {
+	db  *gorm.DB
+	err error
 }
 
-type ConnectionFunc func() *gorm.DB
+func (db *DB) DB() *gorm.DB {
+	return db.db
+}
+
+func (db *DB) Err() error {
+	return db.err
+}
 
 type Manager struct {
 	config  *Config
-	reloved map[string]*gorm.DB
+	reloved map[string]*DB
 	rw      sync.RWMutex
 }
 
-func New(config *Config) *Manager {
-	return NewManager(config)
-}
+type Option func(*Manager) *Manager
 
-func NewManager(config *Config) *Manager {
-	return &Manager{
+func NewManager(config *Config, opts ...Option) *Manager {
+	m := &Manager{
 		config:  config,
-		reloved: make(map[string]*gorm.DB),
+		reloved: make(map[string]*DB),
 		rw:      sync.RWMutex{},
 	}
+
+	for _, opt := range opts {
+		opt(m)
+	}
+
+	return m
 }
 
-func (m *Manager) Connection(name ...string) *gorm.DB {
+func WithInstance(m *Manager) *Manager {
+	SetInstance(m)
+
+	return m
+}
+
+func (m *Manager) Connect(name ...string) *DB {
 	if len(name) > 0 {
 		return m.resolve(name[0])
 	}
@@ -38,19 +56,54 @@ func (m *Manager) Connection(name ...string) *gorm.DB {
 	return m.resolve(m.config.Default)
 }
 
-func (m *Manager) resolve(name string) *gorm.DB {
+func (m *Manager) resolve(name string) *DB {
+	m.rw.Lock()
+	defer m.rw.Unlock()
+
 	if db, ok := m.reloved[name]; ok {
 		return db
 	}
 
 	if _, ok := m.config.Connections[name]; !ok {
-		panic("connection " + name + " is not defined")
+		return &DB{err: errors.New("connection " + name + " is not defined")}
 	}
 
-	m.rw.Lock()
-	defer m.rw.Unlock()
+	var (
+		db  *gorm.DB
+		err error
+	)
 
-	m.reloved[name] = m.config.Connections[name]()
+	switch m.config.Connections[name].(type) {
+	case func() *MySQLConfig:
+		db, err = m.createMySQLConnection(m.config.Connections[name].(*MySQLConfig))
+		break
+	default:
+		return &DB{err: errors.New("connection " + name + " is not defined")}
+	}
+
+	if err != nil {
+		return &DB{err: err}
+	}
+
+	m.reloved[name] = &DB{db: db}
 
 	return m.reloved[name]
+}
+
+func (m *Manager) createMySQLConnection(config *MySQLConfig) (*gorm.DB, error) {
+	// open connection
+	db, err := gorm.Open(mysql.Open(config.DSN), config.GormConfig)
+	if err != nil {
+		return nil, err
+	}
+
+	// use plugins
+	for _, use := range config.GormUsees {
+		err := db.Use(use)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return db, nil
 }
