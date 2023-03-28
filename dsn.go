@@ -14,7 +14,18 @@ type DSN struct {
 	Options map[string]string
 }
 
+func (d DSN) init() {
+	if d.Host == "" {
+		d.Host = "localhost"
+	}
+	if d.Port == 0 {
+		d.Port = 3306
+	}
+}
+
 func (d DSN) String() string {
+	d.init()
+
 	dsn := d.User + ":" + d.Pass + "@tcp(" + d.Host + ":" + strconv.Itoa(d.Port) + ")/" + d.Db
 
 	if d.Options != nil {
