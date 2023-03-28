@@ -33,7 +33,7 @@ func main() {
 					Port: 3306,
 					User: "root",
 					Pass: "123456",
-					Db:   "test",
+					DB:   "test",
 					Options: map[string]string{
 						"charset":   "utf8mb4",
 						"parseTime": "True",
