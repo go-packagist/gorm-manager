@@ -122,7 +122,7 @@ func newDSN(dbname string) DSN {
 		Port: 3306,
 		User: "root",
 		Pass: "123456",
-		Db:   dbname,
+		DB:   dbname,
 	}
 }
 

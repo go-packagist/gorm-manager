@@ -11,7 +11,7 @@ func TestDsn(t *testing.T) {
 		Port: 3306,
 		User: "root",
 		Pass: "password",
-		Db:   "gorm",
+		DB:   "gorm",
 	}
 
 	t.Run("dsn string", func(t *testing.T) {
@@ -33,7 +33,7 @@ func TestDsn(t *testing.T) {
 			Port: 3306,
 			User: "root",
 			Pass: "password",
-			Db:   "gorm",
+			DB:   "gorm",
 		}.String())
 	})
 }
